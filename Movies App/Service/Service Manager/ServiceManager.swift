@@ -8,6 +8,8 @@
 import Alamofire
 
 final class ServiceManager {
+    let utilityQueue = DispatchQueue.global(qos: .userInitiated)
+
     static let shared : ServiceManager = ServiceManager()
     
 }

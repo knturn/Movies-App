@@ -15,8 +15,11 @@ protocol ServiceProtocol {
 final class Service : ServiceProtocol {
     func fetchMovies(onSuccess: @escaping (MovieModel?) -> (), onError: @escaping (AFError) -> ()) {
         ServiceManager.shared.fetch(path: Constant.ServiceEndPoint.moviesServiceEndPoint()) { (response: MovieModel) in
+            
             onSuccess(response)
+            
         } onError: { error in
+            
             onError(error)
         }
         

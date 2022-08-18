@@ -7,7 +7,10 @@
 
 import UIKit
 import SnapKit
+
 class MovieHomeController: UIViewController {
+    
+    private let viewModel = HomeViewModel()
     
     //MARK: UI ELEMENTS
     
@@ -21,13 +24,24 @@ class MovieHomeController: UIViewController {
     
     
     //MARK: LIFE CYCLE
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.fetch {
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+            
+        }
         configureTableView()
         makeTableView()
+        
     }
     
     //MARK: FUNCTIONS
+    
+    
+    
     
     private func configureTableView() {
         drawDesign()
@@ -38,6 +52,7 @@ class MovieHomeController: UIViewController {
     private func drawDesign() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(MovieHomeCell.self, forCellReuseIdentifier: MovieHomeCell.Identifier.custom.rawValue)
         
     }
     
@@ -52,13 +67,19 @@ class MovieHomeController: UIViewController {
 
 extension MovieHomeController : ConfigureToTableView {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = MovieHomeCell()
-        cell.textLabel?.text = "TableView added"
+        guard let cell : MovieHomeCell = tableView.dequeueReusableCell(withIdentifier: MovieHomeCell.Identifier.custom.rawValue) as? MovieHomeCell else {
+            return UITableViewCell()
+        }
+        
+        cell.setTitle(viewModel.getMovieTitle(indexpath: indexPath.row))
+        
         return cell
         
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        
+        viewModel.getCellCount()
+        
     }
     
     
