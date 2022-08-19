@@ -7,7 +7,5 @@
 
 import UIKit.UIViewController
 
-
 final class Constant {
-    
 }

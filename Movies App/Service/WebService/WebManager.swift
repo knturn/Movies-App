@@ -9,21 +9,15 @@ import Foundation
 import Alamofire
 
 protocol ServiceProtocol {
-    func fetchMovies(onSuccess: @escaping (MovieModel?) -> (), onError: @escaping (AFError) -> () )
+    func fetchMovies(onSuccess: @escaping (MovieModel?) -> Void, onError: @escaping (AFError) -> Void )
 }
 
-final class Service : ServiceProtocol {
-    func fetchMovies(onSuccess: @escaping (MovieModel?) -> (), onError: @escaping (AFError) -> ()) {
+final class Service: ServiceProtocol {
+    func fetchMovies(onSuccess: @escaping (MovieModel?) -> Void, onError: @escaping (AFError) -> Void) {
         ServiceManager.shared.fetch(path: Constant.ServiceEndPoint.moviesServiceEndPoint()) { (response: MovieModel) in
-            
             onSuccess(response)
-            
         } onError: { error in
-            
             onError(error)
         }
-        
     }
-    
-    
 }

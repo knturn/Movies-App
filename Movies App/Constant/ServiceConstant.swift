@@ -7,18 +7,12 @@
 
 import Foundation
 
-
 extension Constant {
-    
-    
-    enum ServiceEndPoint : String {
-        
-        case Base_URL = "https://api.themoviedb.org/3/discover/movie?"
-        case Api_KEY = "api_key=21b64be1e49aa6611c35a54b4a51e584"
+    enum ServiceEndPoint: String {
+        case baseURL = "https://api.themoviedb.org/3/discover/movie?"
+        case apiKEY = "api_key=21b64be1e49aa6611c35a54b4a51e584"
         static func moviesServiceEndPoint () -> String {
-            "\(Base_URL.rawValue)\(Api_KEY.rawValue)"
+            "\(baseURL.rawValue)\(apiKEY.rawValue)"
         }
-        
-        
     }
 }
