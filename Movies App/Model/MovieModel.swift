@@ -12,25 +12,12 @@ struct MovieModel: Codable {
 
 // MARK: - Result
 struct Result: Codable {
-    let originalLanguage: OriginalLanguage?
-    let originalTitle, overview: String?
+    
+    let overview: String?
     let popularity: Double?
-    let imageURL, releaseDate, title: String?
-    let voteAverage: Double?
-    let voteCount: Int?
+    let title: String?
     enum CodingKeys: String, CodingKey {
-        case originalLanguage
-        case originalTitle
         case overview, popularity
-        case imageURL = "posterPath"
-        case releaseDate
         case title
-        case voteAverage
-        case voteCount
     }
-}
-
-enum OriginalLanguage: String, Codable {
-    case eng = "en"
-    case jam = "ja"
 }

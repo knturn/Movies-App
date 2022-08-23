@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class HomeViewModel: NSObject {
+final class MovieHomeViewModel: NSObject {
     private let service = Service()
     private var movieResultList = [Result]()
     func fetch(comptletionHandler: @escaping () -> Void) {
@@ -18,17 +18,31 @@ final class HomeViewModel: NSObject {
             self?.movieResultList = model.results
             comptletionHandler()
         } onError: { error in
-            print("Kaan  \(error)")
+            print("We got \(error)")
         }
     }
 }
 
- // MARK: TABLEVIEW FUNCS
-extension HomeViewModel {
+// MARK: TABLEVIEW FUNCS
+extension MovieHomeViewModel {
     func getCellCount() -> Int {
-       movieResultList.count
+        movieResultList.count
     }
+    
     func getMovieTitle(indexpath: Int) -> String {
         movieResultList[indexpath].title ?? "Title Not Found"
     }
+    
+    func getCellOverview(indexpath: Int) -> String {
+        guard var overView = movieResultList[indexpath].overview else {return "Nothing here"}
+        if overView.isEmpty {
+            overView = "We have no idea"
+        }
+        return overView
+    }
+    func getPopularity(indexpath: Int) -> Double {
+        guard let vote = movieResultList[indexpath].popularity else {return 0}
+        return vote
+    }
+    
 }
