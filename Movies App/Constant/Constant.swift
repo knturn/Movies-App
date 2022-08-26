@@ -7,5 +7,6 @@
 
 import UIKit.UIViewController
 
-final class Constant {
+struct Constant {
+     static let imgBaseURL = "https://image.tmdb.org/t/p/w500"
 }

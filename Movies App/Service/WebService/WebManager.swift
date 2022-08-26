@@ -7,15 +7,22 @@
 
 import Foundation
 import Alamofire
+import SwiftUI
 
 protocol ServiceProtocol {
-    func fetchMovies(onSuccess: @escaping (MovieModel?) -> Void, onError: @escaping (AFError) -> Void )
+    func fetchMovies(endPoint: Constant.ServiceEndPoint,
+                     onSuccess: @escaping (MovieListModel?) -> Void, onError: @escaping (AFError) -> Void )
 }
 
 final class Service: ServiceProtocol {
-    func fetchMovies(onSuccess: @escaping (MovieModel?) -> Void, onError: @escaping (AFError) -> Void) {
-        ServiceManager.shared.fetch(path: Constant.ServiceEndPoint.moviesServiceEndPoint()) { (response: MovieModel) in
-            onSuccess(response)
+    typealias Model =  (MovieListModel?) -> Void
+    typealias Error = (AFError) -> Void
+    
+    func fetchMovies(endPoint: Constant.ServiceEndPoint,
+                     onSuccess: @escaping Model,
+                     onError: @escaping Error) {
+        ServiceManager.shared.fetch(path: endPoint.getFullURL()) { (resp: MovieListModel) in
+            onSuccess(resp)
         } onError: { error in
             onError(error)
         }

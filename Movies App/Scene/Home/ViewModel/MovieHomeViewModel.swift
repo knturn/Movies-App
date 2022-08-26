@@ -6,19 +6,35 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class MovieHomeViewModel: NSObject {
     private let service = Service()
-    private var movieResultList = [Result]()
-    func fetch(comptletionHandler: @escaping () -> Void) {
-        service.fetchMovies { [weak self] response in
+    private var movieResultList = [MovieModel]()
+    
+    func fetch(pageType: PageType, comptletionHandler: @escaping () -> Void) {
+        
+        service.fetchMovies(endPoint: pageType.getEndpoint()) { [weak self] response in
             guard let model = response else {
                 return print("error")
             }
-            self?.movieResultList = model.results
+            self?.movieResultList = model.results ?? [MovieModel]()
             comptletionHandler()
         } onError: { error in
             print("We got \(error)")
+        }
+    }
+}
+enum PageType: Int {
+    case popular = 0
+    case kids = 1
+    
+    func getEndpoint() -> Constant.ServiceEndPoint {
+        switch self {
+        case .popular:
+            return Constant.ServiceEndPoint.popularURL
+        case .kids:
+            return Constant.ServiceEndPoint.kidsURL
         }
     }
 }
@@ -40,9 +56,13 @@ extension MovieHomeViewModel {
         }
         return overView
     }
-    func getPopularity(indexpath: Int) -> Double {
-        guard let vote = movieResultList[indexpath].popularity else {return 0}
-        return vote
-    }
     
+    func getModel(indexpath: Int) -> MovieModel {
+        let model = movieResultList[indexpath]
+        return model
+    }
+    func getPosterPath(indexpath: Int) -> String {
+        guard let path = movieResultList[indexpath].posterPath else {return "Nil path"}
+        return path
+    }
 }

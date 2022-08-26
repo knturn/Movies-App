@@ -16,27 +16,42 @@ final class MovieHomeCell: UITableViewCell {
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textColor = .blue
-        label.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
-        label.backgroundColor = .white
+        label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.bold)
         return label
     }()
     private lazy var cellOverview: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.textColor = .gray
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
-    private lazy var voteLabel: UILabel = {
+    private lazy var language: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.textAlignment = .left
-        label.textColor = .red
+        label.textColor = .purple
         label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     private lazy var cellImage: UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = .yellow
         return image
+    }()
+    private lazy var scoreLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.textColor = .brown
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    private lazy var populartiyLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .red
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
     }()
     // MARK: DEFAULT FUNCS
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,15 +62,15 @@ final class MovieHomeCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: SET CELL DETAILS
-    func setTitle (_ title: String) {
-        cellTitle.text = title.uppercased()
-    }
-    func setOverview (_ overview: String) {
-        cellOverview.text = overview
-    }
-    func setVote (_ vote: Double) {
-        let vote = String(vote)
-        voteLabel.text = "Popularity: \(vote)"
+    
+    func configureCell(model: MovieModel) {
+
+        self.cellTitle.text = model.title
+        self.language.text = "Language: \(model.originalLanguage ?? "Unknown")".uppercased()
+        self.cellOverview.text = model.overview
+        self.scoreLabel.text = "Score: \(model.voteAverage ?? 0)"
+        self.populartiyLabel.text = "Popularity: \(model.popularity ?? 0)"
+        self.cellImage.setImage(path: model.posterPath)
     }
 }
 // MARK: EXTENSİON
@@ -67,27 +82,48 @@ extension MovieHomeCell {
     func addCellViews() {
         addSubview(cellTitle)
         addSubview(cellOverview)
-        addSubview(voteLabel)
+        addSubview(language)
+        addSubview(scoreLabel)
+        addSubview(cellImage)
+        addSubview(populartiyLabel)
+        
     }
     func makeConstraint() {
-        voteLabel.snp.makeConstraints { make in
+        cellImage.snp.makeConstraints { make in
+            make.top.equalTo(language.snp.top)
+            make.bottom.equalToSuperview().offset(-2)
+            make.left.equalToSuperview().offset(5)
+            make.right.equalTo(language.snp.left).offset(-5)
+        }
+        language.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
-            make.bottom.equalToSuperview().offset(-100)
-            make.left.equalToSuperview().offset(100)
+            make.bottom.equalToSuperview().offset(-200)
+            make.left.equalToSuperview().offset(150)
             make.right.equalToSuperview().offset(-10)
         }
         cellTitle.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(100)
+            $0.left.equalTo(cellImage).offset(150)
             $0.right.equalToSuperview().offset(-10)
-            $0.top.equalTo(voteLabel.snp.bottom)
-            $0.bottom.equalToSuperview().offset(-30)
+            $0.top.equalTo(language.snp.bottom)
+            $0.bottom.equalToSuperview().offset(-100)
         }
         cellOverview.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(100)
+            $0.left.equalToSuperview().offset(150)
             $0.right.equalToSuperview().offset(-5)
             $0.top.equalTo(cellTitle.snp.bottom).offset(-2)
-            $0.bottom.equalToSuperview().offset(-5)
+            $0.bottom.equalToSuperview().offset(-40)
         }
-        
+        scoreLabel.snp.makeConstraints { make in
+            make.top.equalTo(cellOverview.snp.bottom).offset(2)
+            make.bottom.equalToSuperview().offset(-5)
+            make.left.equalToSuperview().offset(150)
+            make.right.equalToSuperview().offset(-100)
+        }
+        populartiyLabel.snp.makeConstraints { make in
+            make.top.equalTo(cellOverview.snp.bottom).offset(2)
+            make.bottom.equalToSuperview().offset(-5)
+            make.left.equalTo(scoreLabel.snp.right).offset(-30)
+            make.right.equalToSuperview().offset(-10)
+        }
     }
 }
