@@ -8,5 +8,6 @@ target 'Movies App' do
   pod 'SnapKit'
   pod “Alamofire”
   pod "Kingfisher"
+  pod 'SwiftLint'
 
 end
