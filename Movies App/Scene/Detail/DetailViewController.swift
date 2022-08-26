@@ -12,6 +12,7 @@ class DetailViewController: UIViewController {
     // MARK: UIELEMENTS
     private lazy var scrollView: UIScrollView = {
         let svie = UIScrollView()
+        svie.alwaysBounceVertical = true
         svie.backgroundColor = .clear
         return svie
       }()
@@ -28,7 +29,8 @@ class DetailViewController: UIViewController {
     }
     private lazy var poster: UIImageView = {
         let poster = UIImageView()
-        poster.backgroundColor = .lightText
+        poster.backgroundColor = .clear
+        poster.contentMode = .scaleAspectFit
         poster.setImage(path: viewModel.getMoviePoster())
         return poster
     }()
@@ -79,22 +81,22 @@ class DetailViewController: UIViewController {
         }
         
        poster.snp.makeConstraints { make in
-           make.top.equalToSuperview()
-           make.bottom.equalTo(movieTitle.snp.top).offset(-40)
+           make.top.equalTo(view.safeAreaInsets)
+           make.height.equalTo(400)
            make.right.equalTo(view.snp.right).offset(-20)
            make.left.equalTo(view.snp.left).offset(20)
         }
         
         movieTitle.snp.makeConstraints { make in
-            make.top.equalTo(poster.snp.bottom).offset(15)
+            make.top.equalTo(poster.snp.bottom).offset(10)
             make.left.equalTo(view).offset(10)
             make.right.equalTo(view).offset(-10)
         }
     
         detail.snp.makeConstraints { make in
             make.top.equalTo(movieTitle.snp.bottom).offset(20)
-            make.right.equalTo(view).offset(-5)
-            make.left.equalTo(view).offset(5)
+            make.right.equalTo(view).offset(-10)
+            make.left.equalTo(view).offset(10)
            make.bottom.equalTo(scrollView.snp.bottom)
         }
         
